@@ -119,6 +119,6 @@ Route::post('/submit-current',[QuickLinksController::class, 'saveCurAware']);
 Route::get('/get-parent/{section}/{linkCategory?}', [QuickLinksController::class, 'getParent']);
 // Route::get('/get-parent/{id?}',[QuickLinksController::class, 'getParent']);
 Route::get('/quicklinklist',[QuickLinksController::class, 'table']);
-Route::post('/delete-content',[QuickLinksController::class, 'deleteContent']);
+Route::post('/delete-content', [QuickLinksController::class, 'deleteContent']);
 
 require __DIR__.'/auth.php';
