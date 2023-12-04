@@ -14,31 +14,31 @@ use Illuminate\Http\Response;
 class QuickLinksController extends Controller
 {
 
-    public function table()
-    {
-        $page = QuickLinks::all();
-        $list = array();
-        $parent = "";
-        foreach ($page as $d) {
-            if ($d->parent_link_id) {
-                $parent_v = QuickLinks::find($d->parent_link_id);
-                if ($parent_v) {
-                    $parent = $parent_v->title;
-                }
-            }
-            $list[] = [
-                'id' => $d->id,
-                'section' => $this->sectionValue($d->section),
-                'link_category' => $this->categoryValue($d->link_category),
-                'type' => $this->typeValue($d->type),
-                'title' => $d->title,
-                'filename' => $d->orig_filename,
-                'link' => $d->link
-            ];
-        }
-        // dd($page);
-        return $list;
-    }
+  public function table()
+  {
+      $page = QuickLinks::all();
+      $list = array();
+      $parent = "";
+      foreach ($page as $d) {
+          if ($d->parent_link_id) {
+              $parent_v = QuickLinks::find($d->parent_link_id);
+              if ($parent_v) {
+                  $parent = $parent_v->title;
+              }
+          }
+          $list[] = [
+              'id' => $d->id,
+              'section' => $this->sectionValue($d->section),
+              'link_category' => $this->categoryValue($d->link_category),
+              'type' => $this->typeValue($d->type),
+              'title' => $d->title,
+              'filename' => $d->orig_filename,
+              'link' => $d->link
+          ];
+      }
+      // dd($page);
+      return $list;
+  }
 
     public function typeValue($id){
         switch ($id) {

@@ -24,11 +24,7 @@ export default {
     <Head title="QuickLink" />
 
     <BreezeAuthenticatedLayout>
-        <template #header>
-            <h1>
-                QUICK LINKS
-            </h1>
-        </template>
+
         
         <CurrentAwareness />
         
@@ -42,5 +38,6 @@ h1{
     font-weight: bold;
     font-family: Calibri;
 }
+
 
 </style>
