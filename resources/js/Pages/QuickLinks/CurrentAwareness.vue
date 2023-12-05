@@ -210,39 +210,39 @@
         <div class="overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 body bg-gray">
                 <div class="heading-container">
-                    <div>
                         <h3 class="content-heading">
                             QUICK LINKS
                         </h3>
-                    </div>
-
-                    <div class="flex justify-end">
-                        <!-- BUTTON QUICKLINK -->
-                        <button
-                            @click="showRecentQuickLinks"
-                            class="flex items-center button bg-green"
-                        >
-                            Add QuickLink
-                        </button>
-                    </div>
-                    
-                    <div class="search-container">
-                        <!-- Add an input field for search -->
-                        <input
-                            type="search"
-                            v-model="searchQuery"
-                            @input="filterQuicklinks"
-                            placeholder="Search..."
-                            class="rounded-input"
-                        />
-                        <!-- Replace filter button with search icon -->
-                        <img
-                            src="/images/search.svg"
-                            alt="Search"
-                            class="search-icon"
-                        />
-                    </div>
                 </div>
+
+            <div class="flex items-center space-x-4 my-4">
+                <div class="search-container">
+                    <!-- Add an input field for search -->
+                    <input
+                        type="search"
+                        v-model="searchQuery"
+                        @input="filterQuicklinks"
+                        placeholder="Search..."
+                        class="rounded-input"
+                    />
+                    <!-- Replace filter button with search icon -->
+                    <img
+                        src="/images/search.svg"
+                        alt="Search"
+                        class="search-icon"
+                    />
+                </div>
+
+                <div class="flex justify-end">
+                    <!-- BUTTON QUICKLINK -->
+                    <button
+                        @click="showRecentQuickLinks"
+                        class="flex items-center button bg-green"
+                    >
+                        Add QuickLink
+                    </button>
+                </div>
+            </div>
 
                 <div class="table-container">
                     <table class="table">

@@ -24946,23 +24946,25 @@ var _hoisted_45 = {
 var _hoisted_46 = {
   "class": "p-6 body bg-gray"
 };
-var _hoisted_47 = {
+var _hoisted_47 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "heading-container"
-};
-var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
   "class": "content-heading"
 }, " QUICK LINKS ")], -1 /* HOISTED */);
-var _hoisted_49 = {
-  "class": "flex justify-end"
+var _hoisted_48 = {
+  "class": "flex items-center space-x-4 my-4"
 };
-var _hoisted_50 = {
+var _hoisted_49 = {
   "class": "search-container"
 };
-var _hoisted_51 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+var _hoisted_50 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
   src: "/images/search.svg",
   alt: "Search",
   "class": "search-icon"
 }, null, -1 /* HOISTED */);
+var _hoisted_51 = {
+  "class": "flex justify-end"
+};
 var _hoisted_52 = {
   "class": "table-container"
 };
@@ -25112,22 +25114,22 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[10] || (_cache[10] = function () {
       return $options.clearFilters && $options.clearFilters.apply($options, arguments);
     })
-  }, " CANCEL ")])], 32 /* HYDRATE_EVENTS */)])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" SEARCH PART "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_47, [_hoisted_48, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_49, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" BUTTON QUICKLINK "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    onClick: _cache[12] || (_cache[12] = function () {
-      return $options.showRecentQuickLinks && $options.showRecentQuickLinks.apply($options, arguments);
-    }),
-    "class": "flex items-center button bg-green"
-  }, " Add QuickLink ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Add an input field for search "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, " CANCEL ")])], 32 /* HYDRATE_EVENTS */)])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" SEARCH PART "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [_hoisted_47, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_48, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_49, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Add an input field for search "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "search",
-    "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
+    "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
       return $data.searchQuery = $event;
     }),
-    onInput: _cache[14] || (_cache[14] = function () {
+    onInput: _cache[13] || (_cache[13] = function () {
       return $options.filterQuicklinks && $options.filterQuicklinks.apply($options, arguments);
     }),
     placeholder: "Search...",
     "class": "rounded-input"
-  }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.searchQuery]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Replace filter button with search icon "), _hoisted_51])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_52, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_53, [_hoisted_54, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.displayedQuicklinkList, function (ql, index) {
+  }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.searchQuery]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Replace filter button with search icon "), _hoisted_50]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_51, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" BUTTON QUICKLINK "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: _cache[14] || (_cache[14] = function () {
+      return $options.showRecentQuickLinks && $options.showRecentQuickLinks.apply($options, arguments);
+    }),
+    "class": "flex items-center button bg-green"
+  }, " Add QuickLink ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_52, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_53, [_hoisted_54, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.displayedQuicklinkList, function (ql, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: index,
       "class": "row"
@@ -27360,7 +27362,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".heading-container {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n}\r\n\r\n.search-container {\r\n    display: flex;\r\n    align-items: center;\r\n}\r\n\r\n.rounded-input {\r\n    border-radius: 8px;\r\n    /* Adjust the border-radius value as needed */\r\n    padding: 10px;\r\n    /* Adjust the padding value as needed */\r\n}\r\n\r\n.search-icon {\r\n    width: 30px;\r\n    /* Adjust the width as needed */\r\n    height: auto;\r\n    margin-left: 8px;\r\n    /* Adjust the margin as needed */\r\n}\r\n\r\n.table-container {\r\n    max-height: 500px;\r\n    /* Adjust the desired fixed height */\r\n    overflow: auto;\r\n    /* Add a scrollbar when the content exceeds the fixed height */\r\n    border: 2px solid #696767;\r\n    background-color: white;\r\n    position: relative;\r\n    /* Create a new stacking context */\r\n}\r\n\r\n.table {\r\n    width: 100%;\r\n    border-collapse: collapse;\r\n    /* Combine borders for a cleaner look */\r\n}\r\n\r\n.row {\r\n    border-bottom: 2px solid #696767;\r\n}\r\n\r\n.textArea {\r\n    border: 2px solid #696767;\r\n}\r\n\r\n.body {\r\n    max-width: max-w-9xl;\r\n    margin-left: auto;\r\n    margin-right: auto;\r\n    background-color: #d9d9d9;\r\n\r\n    @media screen and (max-width: 640px) {\r\n        /* This applies to small screens (sm:px-6) */\r\n        padding-left: 6px;\r\n        padding-right: 6px;\r\n    }\r\n\r\n    @media (min-width: 1024px) {\r\n        padding-left: 2rem;\r\n        padding-right: 2rem;\r\n    }\r\n}\r\n\r\n.table {\r\n    border: 2px solid #696767;\r\n    background-color: white;\r\n}\r\n\r\n.buttonForm {\r\n    width: 90px;\r\n    height: 40px;\r\n    border-radius: 10px;\r\n    margin: 5px;\r\n    align-items: center;\r\n}\r\n\r\n.buttonTable {\r\n    margin: 5px;\r\n    align-items: center;\r\n    text-align: center;\r\n    width: 25;\r\n}\r\n\r\n.thead {\r\n    background-color: #bdbdbd;\r\n    border: 2px solid #696767;\r\n    text-align: center;\r\n    position: sticky;\r\n    top: 0;\r\n    z-index: 1;\r\n}\r\n\r\n.label {\r\n    font-family: Calibri;\r\n    font-weight: bold;\r\n    font-size: 25px;\r\n}\r\n\r\n.content-heading {\r\n    border-bottom: 2px solid #ffcd00;\r\n    /* Adjust the color and thickness as needed */\r\n    width: -moz-max-content;\r\n    width: max-content;\r\n    margin-bottom: 10px;\r\n    font-family: Calibri;\r\n    font-weight: bold;\r\n    font-size: 50px;\r\n}\r\n\r\n.search {\r\n    width: 900px;\r\n}\r\n\r\n.message {\r\n    text-align: center;\r\n    font-family: Calibri;\r\n    font-weight: bold;\r\n    font-size: 30px;\r\n}\r\n\r\n.icon {\r\n    width: 30px;\r\n    height: auto;\r\n}\r\n\r\n\r\n/* MODAL PART */\r\n.button {\r\n    background-color: #0C4B05;\r\n    color: white;\r\n    padding: 10px 20px;\r\n    border: none;\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n}\r\n\r\n.modal {\r\n    display: block;\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: rgba(0, 0, 0, 0.5);\r\n    z-index: 999;\r\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".heading-container {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n}\r\n\r\n.search-container {\r\n    display: flex;\r\n    align-items: center;\r\n}\r\n\r\n.rounded-input {\r\n    border-radius: 8px;\r\n    /* Adjust the border-radius value as needed */\r\n    padding: 10px;\r\n    width: 500px;\r\n    /* Adjust the padding value as needed */\r\n}\r\n\r\n.search-icon {\r\n    width: 30px;\r\n    /* Adjust the width as needed */\r\n    height: auto;\r\n    margin-left: 8px;\r\n    /* Adjust the margin as needed */\r\n}\r\n\r\n.table-container {\r\n    max-height: 500px;\r\n    /* Adjust the desired fixed height */\r\n    overflow: auto;\r\n    /* Add a scrollbar when the content exceeds the fixed height */\r\n    border: 2px solid #696767;\r\n    background-color: white;\r\n    position: relative;\r\n    /* Create a new stacking context */\r\n}\r\n\r\n.table {\r\n    width: 100%;\r\n    border-collapse: collapse;\r\n    /* Combine borders for a cleaner look */\r\n}\r\n\r\n.row {\r\n    border-bottom: 2px solid #696767;\r\n}\r\n\r\n.textArea {\r\n    border: 2px solid #696767;\r\n}\r\n\r\n.body {\r\n    max-width: max-w-9xl;\r\n    margin-left: auto;\r\n    margin-right: auto;\r\n    background-color: #d9d9d9;\r\n\r\n    @media screen and (max-width: 640px) {\r\n        /* This applies to small screens (sm:px-6) */\r\n        padding-left: 6px;\r\n        padding-right: 6px;\r\n    }\r\n\r\n    @media (min-width: 1024px) {\r\n        padding-left: 2rem;\r\n        padding-right: 2rem;\r\n    }\r\n}\r\n\r\n.table {\r\n    border: 2px solid #696767;\r\n    background-color: white;\r\n}\r\n\r\n.buttonForm {\r\n    width: 90px;\r\n    height: 40px;\r\n    border-radius: 10px;\r\n    margin: 5px;\r\n    align-items: center;\r\n}\r\n\r\n.buttonTable {\r\n    margin: 5px;\r\n    align-items: center;\r\n    text-align: center;\r\n    width: 25;\r\n}\r\n\r\n.thead {\r\n    background-color: #bdbdbd;\r\n    border: 2px solid #696767;\r\n    text-align: center;\r\n    position: sticky;\r\n    top: 0;\r\n    z-index: 1;\r\n}\r\n\r\n.label {\r\n    font-family: Calibri;\r\n    font-weight: bold;\r\n    font-size: 25px;\r\n}\r\n\r\n.content-heading {\r\n    border-bottom: 2px solid #ffcd00;\r\n    /* Adjust the color and thickness as needed */\r\n    width: -moz-max-content;\r\n    width: max-content;\r\n    margin-bottom: 10px;\r\n    font-family: Calibri;\r\n    font-weight: bold;\r\n    font-size: 50px;\r\n    margin: 0 auto;\r\n}\r\n\r\n.search {\r\n    width: 900px;\r\n}\r\n\r\n.message {\r\n    text-align: center;\r\n    font-family: Calibri;\r\n    font-weight: bold;\r\n    font-size: 30px;\r\n}\r\n\r\n.icon {\r\n    width: 30px;\r\n    height: auto;\r\n}\r\n\r\n\r\n/* MODAL PART */\r\n.button {\r\n    background-color: #0C4B05;\r\n    color: white;\r\n    padding: 10px 20px;\r\n    border: none;\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n}\r\n\r\n.modal {\r\n    display: block;\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: rgba(0, 0, 0, 0.5);\r\n    z-index: 999;\r\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
