@@ -16,18 +16,21 @@ class QuickLinksController extends Controller
 
   public function table()
   {
-      $page = QuickLinks::all();
+      $page = QuickLinks::orderBy('id', 'desc')->get();
       $list = array();
       $parent = "";
-      foreach ($page as $d) {
+      
+      foreach ($page as $index => $d) {
           if ($d->parent_link_id) {
               $parent_v = QuickLinks::find($d->parent_link_id);
               if ($parent_v) {
                   $parent = $parent_v->title;
               }
           }
+  
           $list[] = [
               'id' => $d->id,
+              'index' => $index,  // Add an 'index' property
               'section' => $this->sectionValue($d->section),
               'link_category' => $this->categoryValue($d->link_category),
               'type' => $this->typeValue($d->type),
@@ -36,9 +39,35 @@ class QuickLinksController extends Controller
               'link' => $d->link
           ];
       }
-      // dd($page);
+  
       return $list;
   }
+  
+  // public function table()
+  // {
+  //     $page = QuickLinks::all();
+  //     $list = array();
+  //     $parent = "";
+  //     foreach ($page as $d) {
+  //         if ($d->parent_link_id) {
+  //             $parent_v = QuickLinks::find($d->parent_link_id);
+  //             if ($parent_v) {
+  //                 $parent = $parent_v->title;
+  //             }
+  //         }
+  //         $list[] = [
+  //             'id' => $d->id,
+  //             'section' => $this->sectionValue($d->section),
+  //             'link_category' => $this->categoryValue($d->link_category),
+  //             'type' => $this->typeValue($d->type),
+  //             'title' => $d->title,
+  //             'filename' => $d->orig_filename,
+  //             'link' => $d->link
+  //         ];
+  //     }
+  //     // dd($page);
+  //     return $list;
+  // }
 
     public function typeValue($id){
         switch ($id) {
@@ -173,10 +202,10 @@ class QuickLinksController extends Controller
 
         \Log::info("Received ID for deletion: $id");
 
-        // Get the currently authenticated user
+ 
         $user = Auth::user();
 
-        // Find the QuickLinks record by ID and user ID
+       
         $quickLink = QuickLinks::where('id', $id)
             ->where('user_id', $user->id)
             ->first();
@@ -187,7 +216,7 @@ class QuickLinksController extends Controller
             return response()->json(['success' => false, 'error' => 'QuickLink not found or unauthorized'], 404);
         }
 
-        // Delete the associated file from storage
+     
         if ($quickLink->filename) {
             $filePath = storage_path("app/public/quicklinks/{$quickLink->filename}");
             if (file_exists($filePath)) {
@@ -195,7 +224,7 @@ class QuickLinksController extends Controller
             }
         }
 
-        // Delete the QuickLinks record
+
         $quickLink->delete();
 
         return response()->json(['success' => true, 'message' => 'QuickLink deleted successfully']);

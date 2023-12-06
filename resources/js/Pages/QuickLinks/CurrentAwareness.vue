@@ -206,42 +206,42 @@
     </div>
 
     <!-- SEARCH PART -->
-    <div class="mx-auto max-w-8xl sm:px-6 lg:px-8 ">
+    <div class="mx-auto max-w-8xl sm:px-6 lg:px-8 mt-4">
         <div class="overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 body bg-gray">
-                <div class="heading-container">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="heading-container">
                         <h3 class="content-heading">
                             QUICK LINKS
                         </h3>
-                </div>
+                    </div>
 
-            <div class="flex items-center space-x-4 my-4">
-                <div class="search-container">
-                    <!-- Add an input field for search -->
-                    <input
-                        type="search"
-                        v-model="searchQuery"
-                        @input="filterQuicklinks"
-                        placeholder="Search..."
-                        class="rounded-input"
-                    />
-                    <!-- Replace filter button with search icon -->
-                    <img
-                        src="/images/search.svg"
-                        alt="Search"
-                        class="search-icon"
-                    />
-                </div>
+                    <div class="flex items-center space-x-4 mt-4">
+                        <div class="search-container">
+                            <!-- Add an input field for search -->
+                            <input
+                                type="search"
+                                v-model="searchQuery"
+                                @input="filterQuicklinks"
+                                placeholder="Search..."
+                                class="rounded-input"
+                            />
+                            <!-- Replace filter button with search icon -->
+                            <img
+                                src="/images/search.svg"
+                                alt="Search"
+                                class="search-icon"
+                            />
+                        </div>
 
-                <div class="flex justify-end">
-                    <!-- BUTTON QUICKLINK -->
-                    <button
-                        @click="showRecentQuickLinks"
-                        class="flex items-center button bg-green"
-                    >
-                        Add QuickLink
-                    </button>
-                </div>
+                        <!-- BUTTON QUICKLINK aligned to the right -->
+                        <button
+                            @click="showRecentQuickLinks"
+                            class="flex items-center button bg-green"
+                        >
+                            Add QuickLink
+                        </button>
+                    </div>
             </div>
 
                 <div class="table-container">
@@ -340,21 +340,29 @@ export default {
     },
 
     computed: {
-        displayedQuicklinkList() {
-        if (this.searchQuery) {
-            return this.quicklink_list.filter((ql) => {
-                const query = this.searchQuery.toLowerCase();
-                return (
-                    ql.title.toLowerCase().includes(query) ||
-                    ql.section.toLowerCase().includes(query) ||
-                    ql.link_category.toLowerCase().includes(query)
-                );
-            });
-        } else {
-            return this.quicklink_list;
-        }
-    },
-    },
+  displayedQuicklinkList() {
+    // Check if quicklink_list is an array, otherwise use an empty array
+    let sortedList = Array.isArray(this.quicklink_list) ? [...this.quicklink_list] : [];
+
+    // Sort the list based on the 'index' property
+    sortedList.sort((a, b) => a.index - b.index);
+
+    // Filter based on search query
+    if (this.searchQuery) {
+      return sortedList.filter((ql) => {
+        const query = this.searchQuery.toLowerCase();
+        return (
+          ql.title.toLowerCase().includes(query) ||
+          ql.section.toLowerCase().includes(query) ||
+          ql.link_category.toLowerCase().includes(query)
+        );
+      });
+    } else {
+      return sortedList;
+    }
+  },
+},
+
 
     methods: {
         showRecentQuickLinks() {
@@ -376,14 +384,14 @@ export default {
                     }
                 );
 
-                // Check if there are no matches and set the "no match" message
+              
                 if (this.filteredQuicklinkList.length === 0) {
                     this.noMatchMessage = "No matches found.";
                 } else {
-                    this.noMatchMessage = ""; // Clear the "no match" message
+                    this.noMatchMessage = ""; 
                 }
             } else {
-                // Display an empty list and set the "no match" message
+      
                 this.filteredQuicklinkList = [];
                 this.noMatchMessage =
                     "Enter a search query to find QuickLinks.";
@@ -393,7 +401,7 @@ export default {
         initialData() {
             axios.get("/quicklinklist").then((response) => {
                 this.quicklink_list = response.data;
-                console.log("Quicklink List:", this.quicklink_list); // Add this line for debugging
+                console.log("Quicklink List:", this.quicklink_list); 
             });
         },
 
@@ -406,13 +414,12 @@ export default {
         },
 
         updateFileVisibility() {
-            // Show file upload if section is ULS Forms, Current Awareness, or Library Search Tools
+
             const showFileUploadSections = ["2", "1", "4"];
             this.showFileUpload =
                 showFileUploadSections.includes(this.fields.section) &&
                 this.fields.link_category !== "1";
 
-            // Show link input if section is Virtual Libraries or Featured Links
             const showLinkInputSections = ["3", "5"];
             this.showLinkInput = showLinkInputSections.includes(
                 this.fields.section
@@ -444,7 +451,6 @@ export default {
                 .then((response) => {
                     console.log("Form submitted successfully:", response.data);
 
-                    // Replace standard alert with SweetAlert
                     Swal.fire({
                         icon: "success",
                         title: "Content uploaded successfully!",
@@ -455,7 +461,6 @@ export default {
                 .catch((error) => {
                     console.error("Error submitting form:", error);
 
-                    // If you want to show an error message using SweetAlert
                     Swal.fire({
                         icon: "error",
                         title: "Oops...",
@@ -465,44 +470,44 @@ export default {
         },
 
         clearFilters() {
-            // Reset filter values to their initial state
+     
             this.fields.section = "";
-            this.fields.link_category = "1"; // Set to the default value
+            this.fields.link_category = "1"; 
             this.fields.parent_link_id = "";
-            this.fields.type = "1"; // Set to the default value
+            this.fields.type = "1"; 
             this.fields.title = "";
             this.fields.link = "";
             this.showFileUpload = false;
             this.showLinkInput = false;
             this.searchQuery = "";
 
-            // Fetch parent options again
+    
             this.fetchParentOptions();
 
-            // Filter the Quicklinks based on the reset filters
+         
             this.filterQuicklinks();
 
             location.reload();
         },
 
         deleteQL(id) {
-            // Log the ID to the console for debugging
+           
             console.log("first loop Deleting QuickLink with ID:", id);
 
-            // Use SweetAlert instead of confirm
+        
             Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonText: "Yes, delete it!",
-                cancelButtonText: "No, cancel!",
+                confirmButtonText: "Yes, delete it?",
+                cancelButtonText: "No, cancel",
                 reverseButtons: true,
             }).then((result) => {
                 if (result.isConfirmed) {
                     console.log("Deleting QuickLink with ID:", id);
 
-                    // Log the ID before making the Axios request
+              
                     console.log("ID for deletion:", id);
 
                     axios
@@ -510,16 +515,16 @@ export default {
                         .then((response) => {
                             console.log("Server response:", response.data);
                             if (response.data.success) {
-                                // Use SweetAlert for success message
+                                
                                 Swal.fire({
                                     icon: "success",
                                     title: "Successfully deleted!",
                                 }).then(() => {
-                                    this.initialData(); // Refresh the data after successful deletion
-                                    location.reload(); // Reload the page
+                                    this.initialData(); 
+                                    location.reload(); 
                                 });
                             } else {
-                                // Use SweetAlert for error message
+                                
                                 Swal.fire({
                                     icon: "error",
                                     title: "Error deleting content",
@@ -530,7 +535,7 @@ export default {
                         .catch((error) => {
                             console.error("Error deleting content", error);
 
-                            // Use SweetAlert for general error message
+                          
                             Swal.fire({
                                 icon: "error",
                                 title: "Oops...",
@@ -538,7 +543,7 @@ export default {
                             });
                         });
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    // Use SweetAlert for cancelled message
+                    
                     Swal.fire("Cancelled", "Your content is safe :)", "info");
                 }
             });

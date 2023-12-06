@@ -21169,6 +21169,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _css_CurrentAwarenessStyles_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../css/CurrentAwarenessStyles.css */ "./public/css/CurrentAwarenessStyles.css");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 
 
 
@@ -21199,13 +21205,22 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     displayedQuicklinkList: function displayedQuicklinkList() {
       var _this = this;
+      // Check if quicklink_list is an array, otherwise use an empty array
+      var sortedList = Array.isArray(this.quicklink_list) ? _toConsumableArray(this.quicklink_list) : [];
+
+      // Sort the list based on the 'index' property
+      sortedList.sort(function (a, b) {
+        return a.index - b.index;
+      });
+
+      // Filter based on search query
       if (this.searchQuery) {
-        return this.quicklink_list.filter(function (ql) {
+        return sortedList.filter(function (ql) {
           var query = _this.searchQuery.toLowerCase();
           return ql.title.toLowerCase().includes(query) || ql.section.toLowerCase().includes(query) || ql.link_category.toLowerCase().includes(query);
         });
       } else {
-        return this.quicklink_list;
+        return sortedList;
       }
     }
   },
@@ -21223,15 +21238,12 @@ __webpack_require__.r(__webpack_exports__);
           var query = _this2.searchQuery.toLowerCase();
           return ql.title.toLowerCase().includes(query) || ql.section.toLowerCase().includes(query) || ql.link_category.toLowerCase().includes(query);
         });
-
-        // Check if there are no matches and set the "no match" message
         if (this.filteredQuicklinkList.length === 0) {
           this.noMatchMessage = "No matches found.";
         } else {
-          this.noMatchMessage = ""; // Clear the "no match" message
+          this.noMatchMessage = "";
         }
       } else {
-        // Display an empty list and set the "no match" message
         this.filteredQuicklinkList = [];
         this.noMatchMessage = "Enter a search query to find QuickLinks.";
       }
@@ -21240,7 +21252,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
       axios__WEBPACK_IMPORTED_MODULE_0___default().get("/quicklinklist").then(function (response) {
         _this3.quicklink_list = response.data;
-        console.log("Quicklink List:", _this3.quicklink_list); // Add this line for debugging
+        console.log("Quicklink List:", _this3.quicklink_list);
       });
     },
     onFileChange: function onFileChange() {
@@ -21251,11 +21263,8 @@ __webpack_require__.r(__webpack_exports__);
       this.docs = this.$refs.docs.files[0];
     },
     updateFileVisibility: function updateFileVisibility() {
-      // Show file upload if section is ULS Forms, Current Awareness, or Library Search Tools
       var showFileUploadSections = ["2", "1", "4"];
       this.showFileUpload = showFileUploadSections.includes(this.fields.section) && this.fields.link_category !== "1";
-
-      // Show link input if section is Virtual Libraries or Featured Links
       var showLinkInputSections = ["3", "5"];
       this.showLinkInput = showLinkInputSections.includes(this.fields.section);
     },
@@ -21277,8 +21286,6 @@ __webpack_require__.r(__webpack_exports__);
       }
       axios__WEBPACK_IMPORTED_MODULE_0___default().post("/submit-current", formData).then(function (response) {
         console.log("Form submitted successfully:", response.data);
-
-        // Replace standard alert with SweetAlert
         sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire({
           icon: "success",
           title: "Content uploaded successfully!"
@@ -21287,8 +21294,6 @@ __webpack_require__.r(__webpack_exports__);
         });
       })["catch"](function (error) {
         console.error("Error submitting form:", error);
-
-        // If you want to show an error message using SweetAlert
         sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire({
           icon: "error",
           title: "Oops...",
@@ -21297,59 +21302,47 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     clearFilters: function clearFilters() {
-      // Reset filter values to their initial state
       this.fields.section = "";
-      this.fields.link_category = "1"; // Set to the default value
+      this.fields.link_category = "1";
       this.fields.parent_link_id = "";
-      this.fields.type = "1"; // Set to the default value
+      this.fields.type = "1";
       this.fields.title = "";
       this.fields.link = "";
       this.showFileUpload = false;
       this.showLinkInput = false;
       this.searchQuery = "";
-
-      // Fetch parent options again
       this.fetchParentOptions();
-
-      // Filter the Quicklinks based on the reset filters
       this.filterQuicklinks();
       location.reload();
     },
     deleteQL: function deleteQL(id) {
       var _this4 = this;
-      // Log the ID to the console for debugging
       console.log("first loop Deleting QuickLink with ID:", id);
-
-      // Use SweetAlert instead of confirm
       sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "No, cancel!",
+        confirmButtonText: "Yes, delete it?",
+        cancelButtonText: "No, cancel",
         reverseButtons: true
       }).then(function (result) {
         if (result.isConfirmed) {
           console.log("Deleting QuickLink with ID:", id);
-
-          // Log the ID before making the Axios request
           console.log("ID for deletion:", id);
           axios__WEBPACK_IMPORTED_MODULE_0___default().post("/delete-content", {
             id: id
           }).then(function (response) {
             console.log("Server response:", response.data);
             if (response.data.success) {
-              // Use SweetAlert for success message
               sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire({
                 icon: "success",
                 title: "Successfully deleted!"
               }).then(function () {
-                _this4.initialData(); // Refresh the data after successful deletion
-                location.reload(); // Reload the page
+                _this4.initialData();
+                location.reload();
               });
             } else {
-              // Use SweetAlert for error message
               sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire({
                 icon: "error",
                 title: "Error deleting content",
@@ -21358,8 +21351,6 @@ __webpack_require__.r(__webpack_exports__);
             }
           })["catch"](function (error) {
             console.error("Error deleting content", error);
-
-            // Use SweetAlert for general error message
             sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire({
               icon: "error",
               title: "Oops...",
@@ -21367,7 +21358,6 @@ __webpack_require__.r(__webpack_exports__);
             });
           });
         } else if (result.dismiss === (sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().DismissReason).cancel) {
-          // Use SweetAlert for cancelled message
           sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire("Cancelled", "Your content is safe :)", "info");
         }
       });
@@ -24938,7 +24928,7 @@ var _hoisted_43 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   "class": "px-4 py-2 mr-4 font-bold text-white rounded shadow buttonForm bg-green hover:opacity-80 focus:shadow-outline focus:outline-none"
 }, " SUBMIT ", -1 /* HOISTED */);
 var _hoisted_44 = {
-  "class": "mx-auto max-w-8xl sm:px-6 lg:px-8"
+  "class": "mx-auto max-w-8xl sm:px-6 lg:px-8 mt-4"
 };
 var _hoisted_45 = {
   "class": "overflow-hidden shadow-sm sm:rounded-lg"
@@ -24946,25 +24936,25 @@ var _hoisted_45 = {
 var _hoisted_46 = {
   "class": "p-6 body bg-gray"
 };
-var _hoisted_47 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_47 = {
+  "class": "flex items-center justify-between mb-4"
+};
+var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "heading-container"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
   "class": "content-heading"
 }, " QUICK LINKS ")], -1 /* HOISTED */);
-var _hoisted_48 = {
-  "class": "flex items-center space-x-4 my-4"
-};
 var _hoisted_49 = {
+  "class": "flex items-center space-x-4 mt-4"
+};
+var _hoisted_50 = {
   "class": "search-container"
 };
-var _hoisted_50 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+var _hoisted_51 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
   src: "/images/search.svg",
   alt: "Search",
   "class": "search-icon"
 }, null, -1 /* HOISTED */);
-var _hoisted_51 = {
-  "class": "flex justify-end"
-};
 var _hoisted_52 = {
   "class": "table-container"
 };
@@ -25114,7 +25104,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[10] || (_cache[10] = function () {
       return $options.clearFilters && $options.clearFilters.apply($options, arguments);
     })
-  }, " CANCEL ")])], 32 /* HYDRATE_EVENTS */)])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" SEARCH PART "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [_hoisted_47, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_48, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_49, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Add an input field for search "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, " CANCEL ")])], 32 /* HYDRATE_EVENTS */)])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" SEARCH PART "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_47, [_hoisted_48, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_49, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Add an input field for search "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "search",
     "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
       return $data.searchQuery = $event;
@@ -25124,7 +25114,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     placeholder: "Search...",
     "class": "rounded-input"
-  }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.searchQuery]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Replace filter button with search icon "), _hoisted_50]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_51, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" BUTTON QUICKLINK "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.searchQuery]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Replace filter button with search icon "), _hoisted_51]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" BUTTON QUICKLINK aligned to the right "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     onClick: _cache[14] || (_cache[14] = function () {
       return $options.showRecentQuickLinks && $options.showRecentQuickLinks.apply($options, arguments);
     }),
@@ -27362,7 +27352,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".heading-container {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n}\r\n\r\n.search-container {\r\n    display: flex;\r\n    align-items: center;\r\n}\r\n\r\n.rounded-input {\r\n    border-radius: 8px;\r\n    /* Adjust the border-radius value as needed */\r\n    padding: 10px;\r\n    width: 500px;\r\n    /* Adjust the padding value as needed */\r\n}\r\n\r\n.search-icon {\r\n    width: 30px;\r\n    /* Adjust the width as needed */\r\n    height: auto;\r\n    margin-left: 8px;\r\n    /* Adjust the margin as needed */\r\n}\r\n\r\n.table-container {\r\n    max-height: 500px;\r\n    /* Adjust the desired fixed height */\r\n    overflow: auto;\r\n    /* Add a scrollbar when the content exceeds the fixed height */\r\n    border: 2px solid #696767;\r\n    background-color: white;\r\n    position: relative;\r\n    /* Create a new stacking context */\r\n}\r\n\r\n.table {\r\n    width: 100%;\r\n    border-collapse: collapse;\r\n    /* Combine borders for a cleaner look */\r\n}\r\n\r\n.row {\r\n    border-bottom: 2px solid #696767;\r\n}\r\n\r\n.textArea {\r\n    border: 2px solid #696767;\r\n}\r\n\r\n.body {\r\n    max-width: max-w-9xl;\r\n    margin-left: auto;\r\n    margin-right: auto;\r\n    background-color: #d9d9d9;\r\n\r\n    @media screen and (max-width: 640px) {\r\n        /* This applies to small screens (sm:px-6) */\r\n        padding-left: 6px;\r\n        padding-right: 6px;\r\n    }\r\n\r\n    @media (min-width: 1024px) {\r\n        padding-left: 2rem;\r\n        padding-right: 2rem;\r\n    }\r\n}\r\n\r\n.table {\r\n    border: 2px solid #696767;\r\n    background-color: white;\r\n}\r\n\r\n.buttonForm {\r\n    width: 90px;\r\n    height: 40px;\r\n    border-radius: 10px;\r\n    margin: 5px;\r\n    align-items: center;\r\n}\r\n\r\n.buttonTable {\r\n    margin: 5px;\r\n    align-items: center;\r\n    text-align: center;\r\n    width: 25;\r\n}\r\n\r\n.thead {\r\n    background-color: #bdbdbd;\r\n    border: 2px solid #696767;\r\n    text-align: center;\r\n    position: sticky;\r\n    top: 0;\r\n    z-index: 1;\r\n}\r\n\r\n.label {\r\n    font-family: Calibri;\r\n    font-weight: bold;\r\n    font-size: 25px;\r\n}\r\n\r\n.content-heading {\r\n    border-bottom: 2px solid #ffcd00;\r\n    /* Adjust the color and thickness as needed */\r\n    width: -moz-max-content;\r\n    width: max-content;\r\n    margin-bottom: 10px;\r\n    font-family: Calibri;\r\n    font-weight: bold;\r\n    font-size: 50px;\r\n    margin: 0 auto;\r\n}\r\n\r\n.search {\r\n    width: 900px;\r\n}\r\n\r\n.message {\r\n    text-align: center;\r\n    font-family: Calibri;\r\n    font-weight: bold;\r\n    font-size: 30px;\r\n}\r\n\r\n.icon {\r\n    width: 30px;\r\n    height: auto;\r\n}\r\n\r\n\r\n/* MODAL PART */\r\n.button {\r\n    background-color: #0C4B05;\r\n    color: white;\r\n    padding: 10px 20px;\r\n    border: none;\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n}\r\n\r\n.modal {\r\n    display: block;\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: rgba(0, 0, 0, 0.5);\r\n    z-index: 999;\r\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".heading-container {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n}\r\n\r\n.search-container {\r\n    display: flex;\r\n    align-items: center;\r\n}\r\n\r\n.rounded-input {\r\n    border-radius: 8px;\r\n    /* Adjust the border-radius value as needed */\r\n    padding: 10px;\r\n    width: 300px;\r\n    /* Adjust the padding value as needed */\r\n}\r\n\r\n.search-icon {\r\n    width: 30px;\r\n    /* Adjust the width as needed */\r\n    height: auto;\r\n    margin-left: 8px;\r\n    /* Adjust the margin as needed */\r\n}\r\n\r\n.table-container {\r\n    max-height: 500px;\r\n    /* Adjust the desired fixed height */\r\n    overflow: auto;\r\n    /* Add a scrollbar when the content exceeds the fixed height */\r\n    border: 2px solid #696767;\r\n    background-color: white;\r\n    position: relative;\r\n    /* Create a new stacking context */\r\n}\r\n\r\n.table {\r\n    width: 100%;\r\n    border-collapse: collapse;\r\n    /* Combine borders for a cleaner look */\r\n}\r\n\r\n.row {\r\n    border-bottom: 2px solid #696767;\r\n}\r\n\r\n.textArea {\r\n    border: 2px solid #696767;\r\n}\r\n\r\n.body {\r\n    max-width: max-w-9xl;\r\n    margin-left: auto;\r\n    margin-right: auto;\r\n    background-color: #d9d9d9;\r\n\r\n    @media screen and (max-width: 640px) {\r\n        /* This applies to small screens (sm:px-6) */\r\n        padding-left: 6px;\r\n        padding-right: 6px;\r\n    }\r\n\r\n    @media (min-width: 1024px) {\r\n        padding-left: 2rem;\r\n        padding-right: 2rem;\r\n    }\r\n}\r\n\r\n.table {\r\n    border: 2px solid #696767;\r\n    background-color: white;\r\n}\r\n\r\n.buttonForm {\r\n    width: 90px;\r\n    height: 40px;\r\n    border-radius: 10px;\r\n    margin: 5px;\r\n    align-items: center;\r\n}\r\n\r\n.buttonTable {\r\n    margin: 5px;\r\n    align-items: center;\r\n    text-align: center;\r\n    width: 25;\r\n}\r\n\r\n.thead {\r\n    background-color: #bdbdbd;\r\n    border: 2px solid #696767;\r\n    text-align: center;\r\n    position: sticky;\r\n    top: 0;\r\n    z-index: 1;\r\n}\r\n\r\n.label {\r\n    font-family: Calibri;\r\n    font-weight: bold;\r\n    font-size: 25px;\r\n}\r\n\r\n.content-heading {\r\n    border-bottom: 2px solid #ffcd00;\r\n    /* Adjust the color and thickness as needed */\r\n    width: -moz-max-content;\r\n    width: max-content;\r\n    margin-bottom: 10px;\r\n    font-family: Calibri;\r\n    font-weight: bold;\r\n    font-size: 50px;\r\n    margin: 0 auto;\r\n}\r\n\r\n.search {\r\n    width: 500px;\r\n}\r\n\r\n.message {\r\n    text-align: center;\r\n    font-family: Calibri;\r\n    font-weight: bold;\r\n    font-size: 30px;\r\n}\r\n\r\n.icon {\r\n    width: 30px;\r\n    height: auto;\r\n}\r\n\r\n\r\n/* MODAL PART */\r\n.button {\r\n    background-color: #0C4B05;\r\n    color: white;\r\n    padding: 10px 20px;\r\n    border: none;\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n    margin-left: 600px;\r\n}\r\n\r\n.modal {\r\n    display: block;\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: rgba(0, 0, 0, 0.5);\r\n    z-index: 999;\r\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
