@@ -340,28 +340,28 @@ export default {
     },
 
     computed: {
-  displayedQuicklinkList() {
-    // Check if quicklink_list is an array, otherwise use an empty array
-    let sortedList = Array.isArray(this.quicklink_list) ? [...this.quicklink_list] : [];
+        displayedQuicklinkList() {
+            // Check if quicklink_list is an array, otherwise use an empty array
+            let sortedList = Array.isArray(this.quicklink_list) ? [...this.quicklink_list] : [];
 
-    // Sort the list based on the 'index' property
-    sortedList.sort((a, b) => a.index - b.index);
+            // Sort the list based on the 'index' property
+            sortedList.sort((a, b) => a.index - b.index);
 
-    // Filter based on search query
-    if (this.searchQuery) {
-      return sortedList.filter((ql) => {
-        const query = this.searchQuery.toLowerCase();
-        return (
-          ql.title.toLowerCase().includes(query) ||
-          ql.section.toLowerCase().includes(query) ||
-          ql.link_category.toLowerCase().includes(query)
-        );
-      });
-    } else {
-      return sortedList;
-    }
-  },
-},
+            // Filter based on search query
+            if (this.searchQuery) {
+            return sortedList.filter((ql) => {
+                const query = this.searchQuery.toLowerCase();
+                return (
+                ql.title.toLowerCase().includes(query) ||
+                ql.section.toLowerCase().includes(query) ||
+                ql.link_category.toLowerCase().includes(query)
+                );
+            });
+            } else {
+                return sortedList;
+            }
+        },
+    },
 
 
     methods: {
@@ -427,46 +427,108 @@ export default {
         },
 
         submitCurrent() {
-            this.updateFileVisibility();
+        this.updateFileVisibility();
 
-            const formData = new FormData();
-            formData.append("section", this.fields.section);
-            formData.append("link_category", this.fields.link_category);
-            formData.append("parent_link_id", this.fields.parent_link_id);
-            formData.append("type", this.fields.type);
-            formData.append("title", this.fields.title);
+        const formData = new FormData();
+        formData.append("section", this.fields.section);
+        formData.append("link_category", this.fields.link_category);
+        formData.append("parent_link_id", this.fields.parent_link_id);
+        formData.append("type", this.fields.type);
+        formData.append("title", this.fields.title);
 
-            if (this.showFileUpload) {
-                formData.append("file", this.docs);
-            } else {
-                this.docs = null;
-            }
+        if (this.showFileUpload) {
+            formData.append("file", this.docs);
+        } else {
+            this.docs = null;
+        }
 
-            if (this.showLinkInput) {
-                formData.append("link", this.fields.link);
-            }
+        if (this.showLinkInput) {
+            formData.append("link", this.fields.link);
+        }
 
-            axios
-                .post("/submit-current", formData)
-                .then((response) => {
-                    console.log("Form submitted successfully:", response.data);
+        // Determine if it's an edit or add
+        const url = this.fields.id ? `/edit-quicklink/${this.fields.id}` : "/submit-current";
 
-                    Swal.fire({
-                        icon: "success",
-                        title: "Content uploaded successfully!",
-                    }).then(() => {
-                        window.location.reload();
-                    });
-                })
-                .catch((error) => {
-                    console.error("Error submitting form:", error);
+        axios
+            .post(url, formData)
+            .then((response) => {
+                console.log("Form submitted successfully:", response.data);
 
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: "Something went wrong!",
-                    });
+                Swal.fire({
+                    icon: "success",
+                    title: "Content " + (this.fields.id ? "updated" : "uploaded") + " successfully!",
+                }).then(() => {
+                    this.showModal = false;
+                    window.location.reload();
                 });
+            })
+            .catch((error) => {
+                console.error("Error submitting form:", error);
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong!",
+                });
+            });
+        },
+
+        // submitCurrent() {
+        //     this.updateFileVisibility();
+
+        //     const formData = new FormData();
+        //     formData.append("section", this.fields.section);
+        //     formData.append("link_category", this.fields.link_category);
+        //     formData.append("parent_link_id", this.fields.parent_link_id);
+        //     formData.append("type", this.fields.type);
+        //     formData.append("title", this.fields.title);
+
+        //     if (this.showFileUpload) {
+        //         formData.append("file", this.docs);
+        //     } else {
+        //         this.docs = null;
+        //     }
+
+        //     if (this.showLinkInput) {
+        //         formData.append("link", this.fields.link);
+        //     }
+
+        //     axios
+        //         .post("/submit-current", formData)
+        //         .then((response) => {
+        //             console.log("Form submitted successfully:", response.data);
+
+        //             Swal.fire({
+        //                 icon: "success",
+        //                 title: "Content uploaded successfully!",
+        //             }).then(() => {
+        //                 window.location.reload();
+        //             });
+        //         })
+        //         .catch((error) => {
+        //             console.error("Error submitting form:", error);
+
+        //             Swal.fire({
+        //                 icon: "error",
+        //                 title: "Oops...",
+        //                 text: "Something went wrong!",
+        //             });
+        //         });
+        // },
+
+        edit(id) {
+        // You can fetch the existing data for the given ID from the server
+        axios.get(`/get-quicklink/${id}`)
+            .then((response) => {
+                const editedQuickLink = response.data;
+                // Assuming your fields correspond to the properties of your QuickLink model
+                this.fields = { ...editedQuickLink };
+                // Show the modal for editing
+                this.showModal = true;
+            })
+            .catch((error) => {
+                console.error('Error fetching QuickLink for editing', error);
+            });
         },
 
         clearFilters() {

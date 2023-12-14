@@ -21169,6 +21169,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _css_CurrentAwarenessStyles_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../css/CurrentAwarenessStyles.css */ "./public/css/CurrentAwarenessStyles.css");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -21269,6 +21275,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.showLinkInput = showLinkInputSections.includes(this.fields.section);
     },
     submitCurrent: function submitCurrent() {
+      var _this4 = this;
       this.updateFileVisibility();
       var formData = new FormData();
       formData.append("section", this.fields.section);
@@ -21284,12 +21291,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (this.showLinkInput) {
         formData.append("link", this.fields.link);
       }
-      axios__WEBPACK_IMPORTED_MODULE_0___default().post("/submit-current", formData).then(function (response) {
+
+      // Determine if it's an edit or add
+      var url = this.fields.id ? "/edit-quicklink/".concat(this.fields.id) : "/submit-current";
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post(url, formData).then(function (response) {
         console.log("Form submitted successfully:", response.data);
         sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire({
           icon: "success",
-          title: "Content uploaded successfully!"
+          title: "Content " + (_this4.fields.id ? "updated" : "uploaded") + " successfully!"
         }).then(function () {
+          _this4.showModal = false;
           window.location.reload();
         });
       })["catch"](function (error) {
@@ -21299,6 +21310,55 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           title: "Oops...",
           text: "Something went wrong!"
         });
+      });
+    },
+    // submitCurrent() {
+    //     this.updateFileVisibility();
+    //     const formData = new FormData();
+    //     formData.append("section", this.fields.section);
+    //     formData.append("link_category", this.fields.link_category);
+    //     formData.append("parent_link_id", this.fields.parent_link_id);
+    //     formData.append("type", this.fields.type);
+    //     formData.append("title", this.fields.title);
+    //     if (this.showFileUpload) {
+    //         formData.append("file", this.docs);
+    //     } else {
+    //         this.docs = null;
+    //     }
+    //     if (this.showLinkInput) {
+    //         formData.append("link", this.fields.link);
+    //     }
+    //     axios
+    //         .post("/submit-current", formData)
+    //         .then((response) => {
+    //             console.log("Form submitted successfully:", response.data);
+    //             Swal.fire({
+    //                 icon: "success",
+    //                 title: "Content uploaded successfully!",
+    //             }).then(() => {
+    //                 window.location.reload();
+    //             });
+    //         })
+    //         .catch((error) => {
+    //             console.error("Error submitting form:", error);
+    //             Swal.fire({
+    //                 icon: "error",
+    //                 title: "Oops...",
+    //                 text: "Something went wrong!",
+    //             });
+    //         });
+    // },
+    edit: function edit(id) {
+      var _this5 = this;
+      // You can fetch the existing data for the given ID from the server
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/get-quicklink/".concat(id)).then(function (response) {
+        var editedQuickLink = response.data;
+        // Assuming your fields correspond to the properties of your QuickLink model
+        _this5.fields = _objectSpread({}, editedQuickLink);
+        // Show the modal for editing
+        _this5.showModal = true;
+      })["catch"](function (error) {
+        console.error('Error fetching QuickLink for editing', error);
       });
     },
     clearFilters: function clearFilters() {
@@ -21316,7 +21376,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       location.reload();
     },
     deleteQL: function deleteQL(id) {
-      var _this4 = this;
+      var _this6 = this;
       console.log("first loop Deleting QuickLink with ID:", id);
       sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire({
         title: "Are you sure?",
@@ -21339,7 +21399,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 icon: "success",
                 title: "Successfully deleted!"
               }).then(function () {
-                _this4.initialData();
+                _this6.initialData();
                 location.reload();
               });
             } else {
@@ -21363,13 +21423,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       });
     },
     fetchParentOptions: function fetchParentOptions() {
-      var _this5 = this;
+      var _this7 = this;
       var section = this.fields.section;
       var linkCategory = this.fields.link_category;
       this.showParent = linkCategory >= 2 && linkCategory <= 5;
       if (this.showParent) {
         axios__WEBPACK_IMPORTED_MODULE_0___default().get("/get-parent/".concat(section, "/").concat(linkCategory)).then(function (response) {
-          _this5.parentOptions = response.data;
+          _this7.parentOptions = response.data;
         })["catch"](function (error) {
           console.error("Error fetching parent items", error);
         });
@@ -25125,7 +25185,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "row"
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_55, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ql.section), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_56, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ql.link_category), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_57, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ql.type), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_58, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ql.title), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_59, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ql.filename), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_60, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ql.link), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_61, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       onClick: function onClick($event) {
-        return _ctx.edit(ql.id);
+        return $options.edit(ql.id);
       }
     }, _hoisted_64, 8 /* PROPS */, _hoisted_62), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       onClick: function onClick($event) {

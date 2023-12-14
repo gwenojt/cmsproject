@@ -120,5 +120,11 @@ Route::get('/get-parent/{section}/{linkCategory?}', [QuickLinksController::class
 // Route::get('/get-parent/{id?}',[QuickLinksController::class, 'getParent']);
 Route::get('/quicklinklist',[QuickLinksController::class, 'table']);
 Route::post('/delete-content', [QuickLinksController::class, 'deleteContent']);
+// Route to get a specific QuickLink for editing
+Route::get('/get-quicklink/{id}', [QuickLinksController::class, 'getQuickLink']);
+// Route to update an existing QuickLink
+Route::post('/edit-quicklink/{id}', [QuickLinksController::class, 'editQuickLink']);
+
+
 
 require __DIR__.'/auth.php';

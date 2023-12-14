@@ -165,6 +165,49 @@ class QuickLinksController extends Controller
         }
     }
 
+    public function getQuickLink($id) {
+        $quickLink = QuickLinks::findOrFail($id);
+        return response()->json($quickLink);
+    }
+
+    
+    public function editQuickLink(Request $request, $id)
+    {
+        $quickLink = QuickLinks::findOrFail($id);
+
+        // Update fields as needed
+        $quickLink->parent_link_id = $request->input('parent_link_id');
+        $quickLink->link_category = $request->input('link_category');
+        $quickLink->type = $request->input('type');
+        $quickLink->section = $request->input('section');
+        $quickLink->title = $request->input('title');
+        $quickLink->link = $request->input('link');
+
+        // Handle file upload if needed
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            // Update file handling logic as needed
+            $filename = md5(time() . $file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
+            Storage::put('/public/quicklinks/' . $filename, File::get($file));
+
+            // Remove old file if exists
+            if ($quickLink->filename) {
+                $oldFilePath = storage_path("app/public/quicklinks/{$quickLink->filename}");
+                if (file_exists($oldFilePath)) {
+                    unlink($oldFilePath);
+                }
+            }
+
+            $quickLink->filename = $filename;
+            $quickLink->orig_filename = $file->getClientOriginalName();
+        }
+
+        $quickLink->save();
+
+        return response()->json(['success' => true]);
+    }
+
+
     // public function saveCurAware(Request $request)
     // {
     //     $user = Auth::user();
