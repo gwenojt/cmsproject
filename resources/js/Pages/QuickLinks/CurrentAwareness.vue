@@ -218,7 +218,7 @@
 
                     <div class="flex items-center space-x-4 mt-4">
                         <div class="search-container">
-                            <!-- Add an input field for search -->
+
                             <input
                                 type="search"
                                 v-model="searchQuery"
@@ -226,7 +226,6 @@
                                 placeholder="Search..."
                                 class="rounded-input"
                             />
-                            <!-- Replace filter button with search icon -->
                             <img
                                 src="/images/search.svg"
                                 alt="Search"
@@ -234,7 +233,7 @@
                             />
                         </div>
 
-                        <!-- BUTTON QUICKLINK aligned to the right -->
+
                         <button
                             @click="showRecentQuickLinks"
                             class="flex items-center button bg-green"
@@ -341,13 +340,12 @@ export default {
 
     computed: {
         displayedQuicklinkList() {
-            // Check if quicklink_list is an array, otherwise use an empty array
+            
             let sortedList = Array.isArray(this.quicklink_list) ? [...this.quicklink_list] : [];
 
-            // Sort the list based on the 'index' property
+    
             sortedList.sort((a, b) => a.index - b.index);
 
-            // Filter based on search query
             if (this.searchQuery) {
             return sortedList.filter((ql) => {
                 const query = this.searchQuery.toLowerCase();
@@ -517,13 +515,11 @@ export default {
         // },
 
         edit(id) {
-        // You can fetch the existing data for the given ID from the server
         axios.get(`/get-quicklink/${id}`)
             .then((response) => {
                 const editedQuickLink = response.data;
-                // Assuming your fields correspond to the properties of your QuickLink model
                 this.fields = { ...editedQuickLink };
-                // Show the modal for editing
+
                 this.showModal = true;
             })
             .catch((error) => {

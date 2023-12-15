@@ -175,7 +175,7 @@ class QuickLinksController extends Controller
     {
         $quickLink = QuickLinks::findOrFail($id);
 
-        // Update fields as needed
+        // Update fields
         $quickLink->parent_link_id = $request->input('parent_link_id');
         $quickLink->link_category = $request->input('link_category');
         $quickLink->type = $request->input('type');
@@ -183,14 +183,14 @@ class QuickLinksController extends Controller
         $quickLink->title = $request->input('title');
         $quickLink->link = $request->input('link');
 
-        // Handle file upload if needed
+        // Handle file upload
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            // Update file handling logic as needed
+            // Update file handling
             $filename = md5(time() . $file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
             Storage::put('/public/quicklinks/' . $filename, File::get($file));
 
-            // Remove old file if exists
+            // Remove old file
             if ($quickLink->filename) {
                 $oldFilePath = storage_path("app/public/quicklinks/{$quickLink->filename}");
                 if (file_exists($oldFilePath)) {

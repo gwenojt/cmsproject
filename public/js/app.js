@@ -21211,15 +21211,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   computed: {
     displayedQuicklinkList: function displayedQuicklinkList() {
       var _this = this;
-      // Check if quicklink_list is an array, otherwise use an empty array
       var sortedList = Array.isArray(this.quicklink_list) ? _toConsumableArray(this.quicklink_list) : [];
-
-      // Sort the list based on the 'index' property
       sortedList.sort(function (a, b) {
         return a.index - b.index;
       });
-
-      // Filter based on search query
       if (this.searchQuery) {
         return sortedList.filter(function (ql) {
           var query = _this.searchQuery.toLowerCase();
@@ -21350,12 +21345,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     // },
     edit: function edit(id) {
       var _this5 = this;
-      // You can fetch the existing data for the given ID from the server
       axios__WEBPACK_IMPORTED_MODULE_0___default().get("/get-quicklink/".concat(id)).then(function (response) {
         var editedQuickLink = response.data;
-        // Assuming your fields correspond to the properties of your QuickLink model
         _this5.fields = _objectSpread({}, editedQuickLink);
-        // Show the modal for editing
         _this5.showModal = true;
       })["catch"](function (error) {
         console.error('Error fetching QuickLink for editing', error);
@@ -25164,7 +25156,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[10] || (_cache[10] = function () {
       return $options.clearFilters && $options.clearFilters.apply($options, arguments);
     })
-  }, " CANCEL ")])], 32 /* HYDRATE_EVENTS */)])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" SEARCH PART "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_47, [_hoisted_48, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_49, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Add an input field for search "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, " CANCEL ")])], 32 /* HYDRATE_EVENTS */)])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" SEARCH PART "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_47, [_hoisted_48, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_49, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "search",
     "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
       return $data.searchQuery = $event;
@@ -25174,7 +25166,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     placeholder: "Search...",
     "class": "rounded-input"
-  }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.searchQuery]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Replace filter button with search icon "), _hoisted_51]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" BUTTON QUICKLINK aligned to the right "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.searchQuery]]), _hoisted_51]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     onClick: _cache[14] || (_cache[14] = function () {
       return $options.showRecentQuickLinks && $options.showRecentQuickLinks.apply($options, arguments);
     }),
